@@ -9,7 +9,7 @@
     </transition>
     <button @click="toggleParagraph">{{ !paragraphisVisible ? "Show" : "Hide" }} paragraph</button>
   </div>
-  <base-modal @close="hideDialog" v-if="dialogIsVisible">
+    <base-modal @close="hideDialog" :open="dialogIsVisible">
     <p>This is a test dialog!</p>
     <button @click="hideDialog">Close it!</button>
   </base-modal>
@@ -105,7 +105,7 @@ button:active {
 
 .paragraph-leave-active {
   /* transition: all 0.3s ease-in; */
-  animation: paragraphAnimationLeave 0.3s ease-in;
+  animation: paragraphAnimation 0.3s ease-in reverse;
 }
 
 /* Animation for Paragraph */
@@ -117,18 +117,6 @@ button:active {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
-  }
-}
-
-/* Reverse Animation for Paragraph */
-@keyframes paragraphAnimationLeave {
-  from {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-3rem) scale(0.9);
   }
 }
 
