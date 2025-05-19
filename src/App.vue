@@ -3,6 +3,12 @@
     <div class="block" :class="{'animate': animatedBlock, 'reverse-animate': !animatedBlock && reverseAnimatedBlock}"></div>
     <button @click="animateBlock">Animate</button>
   </div>
+  <div class="container">
+    <transition>
+      <p v-if="paragraphisVisible">This is only sometimes visible...</p>
+    </transition>
+    <button @click="toggleParagraph">{{ !paragraphisVisible ? "Show" : "Hide" }} paragraph</button>
+  </div>
   <base-modal @close="hideDialog" v-if="dialogIsVisible">
     <p>This is a test dialog!</p>
     <button @click="hideDialog">Close it!</button>
@@ -18,7 +24,8 @@ export default {
     return { 
       animatedBlock: false,
       reverseAnimatedBlock: false,
-      dialogIsVisible: false 
+      dialogIsVisible: false,
+      paragraphisVisible: false,
     };
   },
   methods: {
@@ -31,6 +38,9 @@ export default {
     },
     hideDialog() {
       this.dialogIsVisible = false;
+    },
+    toggleParagraph() {
+      this.paragraphisVisible = !this.paragraphisVisible;
     },
   },
 };
@@ -88,6 +98,31 @@ button:active {
 .reverse-animate {
   animation: reverse-slide-zoom-circle-it 1s forwards;
 }
+
+.v-enter-from {
+  opacity: 0;
+  transform: translateY(-3rem) scale(0.9);
+}
+.v-enter-active {
+  transition: all 0.3s ease-out;
+}
+.v-enter-to {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.v-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.v-leave-active {
+  transition: all 0.3s ease-in;
+}
+.v-leave-to {
+  opacity: 0;
+  transform: translateY(-3rem) scale(0.9);
+}
+
 
 @keyframes slide-zoom-circle-it {
   0% {
