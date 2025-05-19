@@ -4,7 +4,7 @@
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
-    <transition>
+    <transition name="paragraph">
       <p v-if="paragraphisVisible">This is only sometimes visible...</p>
     </transition>
     <button @click="toggleParagraph">{{ !paragraphisVisible ? "Show" : "Hide" }} paragraph</button>
@@ -99,31 +99,40 @@ button:active {
   animation: reverse-slide-zoom-circle-it 1s forwards;
 }
 
-.v-enter-from {
-  opacity: 0;
-  transform: translateY(-3rem) scale(0.9);
-}
-.v-enter-active {
-  transition: all 0.3s ease-out;
-}
-.v-enter-to {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+.paragraph-enter-active {
+  animation: paragraphAnimation 0.3s ease-out;
 }
 
-.v-leave-from {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-.v-leave-active {
-  transition: all 0.3s ease-in;
-}
-.v-leave-to {
-  opacity: 0;
-  transform: translateY(-3rem) scale(0.9);
+.paragraph-leave-active {
+  /* transition: all 0.3s ease-in; */
+  animation: paragraphAnimationLeave 0.3s ease-in;
 }
 
+/* Animation for Paragraph */
+@keyframes paragraphAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
+/* Reverse Animation for Paragraph */
+@keyframes paragraphAnimationLeave {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-3rem) scale(0.9);
+  }
+}
+
+/* Animation for Block*/
 @keyframes slide-zoom-circle-it {
   0% {
     transform: translateX(0) scale(1);
@@ -139,7 +148,7 @@ button:active {
     transform: translateX(-100px) scale(0.75);
   }
 }
-
+/* Reverse Animation for Block*/
 @keyframes reverse-slide-zoom-circle-it {
   0% {
     background-color: #004f63;
