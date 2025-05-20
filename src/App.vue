@@ -10,7 +10,9 @@
       @after-enter="afterEnter"
       @before-leave="beforeLeave"
       @leave="leave"
-      @after-leave="afterLeave">
+      @after-leave="afterLeave"
+      @enter-cancelled="enterCancelled"
+      @leave-cancelled="leaveCancelled">
       <p v-if="paragraphisVisible">
       This is only sometimes visible...</p>
     </transition>
@@ -33,6 +35,8 @@ export default {
       reverseAnimatedBlock: false,
       dialogIsVisible: false,
       paragraphisVisible: false,
+      enterInterval: null,
+      leaveInterval: null,
     };
   },
   methods: {
@@ -52,10 +56,20 @@ export default {
     beforeEnter(el) {
       console.log('beforeEnter');
       console.log(el);
+      el.style.opacity = 0;
     },
-    enter(el) {
+    enter(el, done) {
       console.log('enter');
       console.log(el);
+      let round = 1;
+      this.enterInterval = setInterval(() => {
+        round++;
+        el.style.opacity = round * 0.05;
+        if (round > 50) {
+          clearInterval(this.enterInterval);
+          done();
+        }
+      }, 20);
     },
     afterEnter(el) {
       console.log('afterEnter');
@@ -65,13 +79,31 @@ export default {
       console.log('beforeLeave');
       console.log(el);
     },
-    leave(el) {
+    leave(el, done) {
       console.log('leave');
       console.log(el);
+      let round = 50;
+      this.leaveInterval = setInterval(() => {
+        round--;
+        el.style.opacity = round * 0.05;
+        if (round < 0) {
+          clearInterval(this.leaveInterval);
+          done();
+        }
+      }, 20);
     },
     afterLeave(el) {
       console.log('afterLeave');
       console.log(el);
+      el.style.display = 'none';
+    },
+    enterCancelled() {
+      clearInterval(this.enterInterval);
+      console.log('enterCancelled');
+    },
+    leaveCancelled() {
+      clearInterval(this.leaveInterval);
+      console.log('leaveCancelled');
     },
 
   },
@@ -131,14 +163,14 @@ button:active {
   animation: reverse-slide-zoom-circle-it 1s forwards;
 }
 
-.paragraph-enter-active {
+/* .paragraph-enter-active {
   animation: paragraphAnimation 0.3s ease-out;
-}
+} */
 
-.paragraph-leave-active {
-  /* transition: all 0.3s ease-in; */
+/* .paragraph-leave-active {
+  transition: all 0.3s ease-in;
   animation: paragraphAnimation 0.3s ease-in reverse;
-}
+} */
 
 /* Animation for Paragraph */
 @keyframes paragraphAnimation {
