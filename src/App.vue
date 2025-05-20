@@ -4,8 +4,15 @@
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
-    <transition name="paragraph">
-      <p v-if="paragraphisVisible">This is only sometimes visible...</p>
+    <transition name="paragraph"
+      @before-enter="beforeEnter"
+      @enter="enter"
+      @after-enter="afterEnter"
+      @before-leave="beforeLeave"
+      @leave="leave"
+      @after-leave="afterLeave">
+      <p v-if="paragraphisVisible">
+      This is only sometimes visible...</p>
     </transition>
     <button @click="toggleParagraph">{{ !paragraphisVisible ? "Show" : "Hide" }} paragraph</button>
   </div>
@@ -42,6 +49,31 @@ export default {
     toggleParagraph() {
       this.paragraphisVisible = !this.paragraphisVisible;
     },
+    beforeEnter(el) {
+      console.log('beforeEnter');
+      console.log(el);
+    },
+    enter(el) {
+      console.log('enter');
+      console.log(el);
+    },
+    afterEnter(el) {
+      console.log('afterEnter');
+      console.log(el);
+    },
+    beforeLeave(el) {
+      console.log('beforeLeave');
+      console.log(el);
+    },
+    leave(el) {
+      console.log('leave');
+      console.log(el);
+    },
+    afterLeave(el) {
+      console.log('afterLeave');
+      console.log(el);
+    },
+
   },
 };
 </script>
