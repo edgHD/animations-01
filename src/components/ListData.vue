@@ -1,6 +1,6 @@
 <template>
     <ul>
-        <transition-group name="item" @before-enter="beforeEnter" @enter="enter" @leave="leave">
+        <transition-group name="item">
             <li v-for="item in sampleList" :key="item" @click="removeItem(item)">
                 {{ item }}
             </li>
@@ -13,6 +13,7 @@
 
 <script>
 export default {
+    emits: ['addItem'],
     data() {
         return {
             sampleList: [
